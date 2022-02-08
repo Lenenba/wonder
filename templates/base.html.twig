@@ -17,9 +17,16 @@
                 {% include "partials/_sidebar.html.twig" %}
                 <div class="app-content flex-fill">
                     {% block body %}{% endblock %}
-                </div>
+                </div>  
             </div>
         </div>
+        {% for cat, list in app.flashes %}
+            {% for message in list %}
+                <div class="flash flash-{{ cat }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
         {% include "partials/_footer.html.twig" %}
     </body>
 </html>

@@ -283,6 +283,19 @@ small {
 .text-small {
   font-size: var(--font-size-small);
 }
+
+/* flash */
+
+.flash {
+  padding: 20px;
+  text-align: center;
+  color: #fff; 
+}
+
+.flash-success {
+  background-color: var(--primary);
+}
+
 /* header */
 
 header {
