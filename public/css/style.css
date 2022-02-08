@@ -6,7 +6,7 @@
   --primary-light:#e7f9f9;
   --accent:#0652DD;
   --warning:#EA2027;
-  --succes:#009432;
+  --success:#009432;
   --font-family:'Open Sans', sans-serif;
   --box-shadow:0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
   --border-radius: 3px;
@@ -25,6 +25,7 @@
   --font-weight-regular:400;
   --font-weight-semi-bold:600;
   --font-weight-bold:700;
+  --line-height-hight:30px
 
 }
 /* debug */
@@ -121,6 +122,14 @@ small {
 
 /* margin */
 
+.mr-auto {
+   margin-right: auto;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
 .m-5{
   margin: 5px ;
 }
@@ -172,6 +181,10 @@ small {
   padding-bottom: 20px ;
 }
 
+.pb-30{
+  padding-bottom: 30px ;
+}
+
 .py-20{
   padding-top: 20px ;
   padding-bottom: 20px;
@@ -190,6 +203,11 @@ small {
 
 .content {
   max-width: var(--max-width) 
+}
+
+.separator {
+  border-bottom: 1px solid var(--gray-light);
+  margin: 30px 0px;
 }
 
 /* sidebar */
@@ -293,7 +311,7 @@ small {
 }
 
 .flash-success {
-  background-color: var(--primary);
+  background-color: var(--success);
 }
 
 /* header */

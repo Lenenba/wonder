@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Question;
+use App\Form\CommentType;
 use App\Form\QuestionType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +28,7 @@ class QuestionController extends AbstractController
 
             $em->persist($question);
             $em->flush();
-            $this->addFlash('succes', 'votre question a bien ete ajoutee');
+            $this->addFlash('success', 'votre question a bien ete ajoutee');
         
             return  $this->redirectToRoute('home');
         }
@@ -37,22 +39,26 @@ class QuestionController extends AbstractController
     }
 
     #[Route('/question/{id}', name: 'question_show')]
-    public function show(Request $request, string $id): Response
+    public function show(Request $request, Question $question, EntityManagerInterface $em): Response
     {
-        $question = [
-                'id' => '2',
-                'title' => 'Je suis une super question',
-                'content' => 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rem quia eaque earum saepe natus aspernatur maxime, tenetur sequi officia dolore quo cum reprehenderit quasi aliquid iure quibusdam nisi. Facere, amet.',
-                'rating' => 20,
-                'author' => [
-                    'name' => 'jean Dupont',
-                    'avatar' => 'https://randomuser.me/api/portraits/men/49.jpg'
-                ],
-                'nbrOfResponse' => 15
-            ];
+        $comment = new Comment();
+        $commentForm = $this->createForm(CommentType::class, $comment);
+        $commentForm->handleRequest($request);
+        
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $comment->setCreatedAt(new \DateTimeImmutable());
+            $comment->setRating(0);
+            $comment->setQuestion($question);
+            $em->persist($comment);
+            $em->flush();
+            $this->addFlash('success', 'votre reponse a bien ete ajoutee');
+
+            return $this->redirect($request->getUri());
+        }
 
         return $this->render('question/show.html.twig', [
             'question' => $question,
+            'commentForm' => $commentForm->createView()
         ]);
     }
 }
