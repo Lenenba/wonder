@@ -29,9 +29,12 @@
         {% endif %}
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-        <button class="btn btn-primary" type="submit">
+        <button class="btn btn-primary mr-10" type="submit">
             Connexion
         </button>
+        <small>
+            <a href="{{ path('signup') }}"> vous n'avez pas encre de compte? </a>
+        </small>
     </form>
 </div>
 {% endblock %}
