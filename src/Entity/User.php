@@ -19,18 +19,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Assert\NotBlank(message: 'veuillez renseinger votre email.')]
+    #[Assert\Email(message: 'veuillez renseinger un email valide.')]
     private $email;
 
     #[ORM\Column(type: 'json')]
     private $roles = [];
 
     #[ORM\Column(type: 'string')]
+    #[Assert\NotBlank(message: 'veuillez renseinger votre password.')]
+    #[Assert\Length(min: 6, minMessage: 'le mot de passe doit faire au moins 6 carateres.')]
     private $password;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: 'veuillez renseinger votre prenom.')]
     private $firstname;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: 'veuillez renseinger votre nom.')]
     private $lastname;
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Question::class, orphanRemoval: true)]
@@ -40,6 +46,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $comments;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: 'veuillez renseinger une image.')]
+    #[Assert\Url(message: 'veuillez renseinger une images de profil.')]
     private $picture;
 
     public function __construct()
