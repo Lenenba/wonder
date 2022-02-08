@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 class Comment
@@ -14,6 +15,8 @@ class Comment
     private $id;
 
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank(message: 'veuillez renseinger une reponse')]
+    #[Assert\Length(min: 10, minMessage: 'votre reponse est trop courte ')]
     private $content;
 
     #[ORM\Column(type: 'integer')]
