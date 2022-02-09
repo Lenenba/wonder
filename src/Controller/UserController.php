@@ -25,8 +25,8 @@ class UserController extends AbstractController
             return $this->redirectToRoute('current_user');
         }
         
-        return $this->render('user/index.html.twig', [
-            'controller_name' => 'UserController',
+        return $this->render('user/show.html.twig', [
+            'user' => $user,
         ]);
     }
 
@@ -38,7 +38,7 @@ class UserController extends AbstractController
         $userForm = $this->createForm(UserType::class, $user);
         $userForm->handleRequest($request);
         $userForm->remove('password');
-        $userForm->add('newPassword', PasswordType::class, ['label' => 'Nouveau mot de passe']);
+        $userForm->add('newPassword', PasswordType::class, ['label' => 'Nouveau mot de passe', 'required'=> false]);
 
         if ($userForm->isSubmitted() && $userForm->isValid()) {
             $newPassword = $user->getNewPassword();
@@ -46,6 +46,8 @@ class UserController extends AbstractController
                 $hash = $passwordHasher->hashPassword($user, $newPassword);
                 $user->setPassword($hash);
             }
+            $em->flush();
+            $this->addFlash('success', 'Modification sauvegarde');
         }
 
         return $this->render('user/index.html.twig', [

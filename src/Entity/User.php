@@ -53,10 +53,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Url(message: 'veuillez renseinger une images de profil.')]
     private $picture;
 
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Vote::class, orphanRemoval: true)]
+    private $votes;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->votes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -108,7 +112,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see NewPasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -123,7 +127,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getNewPassword(): string
+    public function getNewPassword(): ?string
     {
         return $this->newPassword;
     }
@@ -244,5 +248,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->firstname. ' ' . $this->lastname;
         ;
+    }
+
+    /**
+     * @return Collection|Vote[]
+     */
+    public function getVotes(): Collection
+    {
+        return $this->votes;
+    }
+
+    public function addVote(Vote $vote): self
+    {
+        if (!$this->votes->contains($vote)) {
+            $this->votes[] = $vote;
+            $vote->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVote(Vote $vote): self
+    {
+        if ($this->votes->removeElement($vote)) {
+            // set the owning side to null (unless already changed)
+            if ($vote->getAuthor() === $this) {
+                $vote->setAuthor(null);
+            }
+        }
+
+        return $this;
     }
 }
